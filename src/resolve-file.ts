@@ -1,10 +1,12 @@
-import { join, dirname } from "path/posix";
+import { posix } from "path";
 import { parseModulePath } from "./parse-module-path.js";
 import { writeFile, mkdir } from "fs/promises";
 import { existsSync } from "fs";
 import { getRawGithubUrl, rawGitHbHost } from "./get-raw-github-url.js";
 import { got } from "./got.js";
 import { logger } from "./logger.js";
+
+const { join, dirname } = posix;
 export function resolveFilePathWithBase(base: string) {
   return (modulePath: string, current: string): string => {
     const AT_ABS_PATH = join(base, "lib");

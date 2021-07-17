@@ -1,5 +1,6 @@
 import { resolveFilePathWithBase } from "../resolve-file";
-import { join } from "path/posix";
+import { posix } from "path";
+const { join } = posix;
 test("resolve file path", () => {
   const base = "/base/rsshub";
   const resolveFilePath = resolveFilePathWithBase(base);

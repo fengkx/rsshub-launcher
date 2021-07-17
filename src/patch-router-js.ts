@@ -1,6 +1,7 @@
-import { join } from "path/posix";
+import { posix } from "path";
 import { writeFile } from "fs/promises";
 
+const { join } = posix;
 export async function patchRouterJs(
   routePath: string,
   requirePath: string,
