@@ -40,7 +40,7 @@
     "build": "npx tsc",
     "test": "npx jest",
     "lint": "npx eslint --ext .js,.ts --fix .",
-    "format": "npx prettier -w "
+    "format": "npx prettier -w ."
   },
   "repository": {
     "type": "git",
