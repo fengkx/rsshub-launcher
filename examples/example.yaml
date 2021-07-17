@@ -1,0 +1,7 @@
+routes:
+  - remoteUrl: "https://raw.githubusercontent.com/zhangxiang012/RSSHub/f89a1beae606c83263fb865c8eee953eed2219a5/lib/routes/kge/user.js"
+    routePath: "/kge/:userid"
+  - remoteUrl: "https://raw.githubusercontent.com/zhangxiang012/RSSHub/f89a1beae606c83263fb865c8eee953eed2219a5/lib/routes/kge/reply.js"
+    routePath: "/kge/reply/:playid"
+  - remoteUrl: "https://github.com/hondajojo/RSSHub/raw/1230fad8e74e152729bc0856c0c3459a70e3aa69/lib/routes/xiaoyuzhou/podcast.js"
+    routePath: "/xiaoyuzhou/podcast/:id"

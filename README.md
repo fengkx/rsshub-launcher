@@ -1,1 +1,1 @@
-# rsshub-launcher
+# RSSHub launcher
