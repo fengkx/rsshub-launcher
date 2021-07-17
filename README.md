@@ -6,10 +6,15 @@
 
 ### 安装
 
-> npm i -g rsshub-launcher ###上传配置文件
-> 编写一个配置 Yaml 文件，上传到可以提供 plain text 访问的 HTTPS 服务器上。例如 GitHub Gist。
-> 文件包含包含一个 routes 列表，每一项包含路由 url 和路由挂载的`koa-router`path。
-> 下面是一个[实例](https://github.com/fengkx/rsshub-launcher/blob/master/examples/example.yaml):
+```shell
+npm i -g rsshub-launcher
+```
+
+### 上传配置文件
+
+编写一个配置 Yaml 文件，上传到可以提供 plain text 访问的 HTTPS 服务器上。例如 GitHub Gist。
+文件包含包含一个 routes 列表，每一项包含路由 url 和路由挂载的`koa-router`path。
+下面是一个[实例](https://github.com/fengkx/rsshub-launcher/blob/master/examples/example.yaml):
 
 ```yaml
 routes:
@@ -21,7 +26,7 @@ routes:
     routePath: "/xiaoyuzhou/podcast/:id"
 ```
 
-remoteUrl 是路由入口（传入`koa-router`的文件）url,routePath 是其对应的 path。
+remoteUrl 是路由入口(传入`koa-router`的文件)url,routePath 是其对应的 path。
 
 ### 运行
 
