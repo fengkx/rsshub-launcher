@@ -6,11 +6,16 @@ import path, { join as pathJoin } from "path";
 import { logger } from "./logger.js";
 import { got } from "./got.js";
 import { load as loadYaml } from "js-yaml";
-import { downloadRoute, RouteInfo } from "./download-route.js";
+import {
+  downloadRoute,
+  getRouteInfoFromPr,
+  RouteConfig,
+  RouteInfo,
+} from "./download-route.js";
 import { existsSync } from "fs";
 import { readFile } from "fs/promises";
 
-function parseRoutesConfig(configYaml: string): RouteInfo[] {
+function parseRoutesConfig(configYaml: string): RouteConfig[] {
   const config = loadYaml(configYaml);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { routes } = config as unknown as any;
@@ -18,12 +23,16 @@ function parseRoutesConfig(configYaml: string): RouteInfo[] {
     throw new TypeError("routes field should be array");
   const valid = routes.every(
     (route) =>
-      typeof route.remoteUrl === "string" && typeof route.routePath === "string"
+      (typeof route.remoteUrl === "string" &&
+        typeof route.routePath === "string") ||
+      typeof route.prUrl === "string"
   );
   if (!valid) {
-    throw new TypeError("route should provide remoteUrl and routePath");
+    throw new TypeError(
+      "route should provide remoteUrl and routePath or one prUrl"
+    );
   }
-  return routes as RouteInfo[];
+  return routes as RouteConfig[];
 }
 
 async function checkRSSHubRoot(RSSHUB_REPO_ROOT: string): Promise<boolean> {
@@ -58,7 +67,18 @@ async function checkRSSHubRoot(RSSHUB_REPO_ROOT: string): Promise<boolean> {
     }
     const configUrl = process.env["RSSHUB_LAUNCHER_CONFIG_URL"];
     const configYaml = await got(configUrl).text();
-    const routes = parseRoutesConfig(configYaml);
+    const configItems = parseRoutesConfig(configYaml);
+    const routes: RouteInfo[] = [];
+    await Promise.all(
+      configItems.map(async (config) => {
+        if ("prUrl" in config) {
+          const routeInfos = await getRouteInfoFromPr(config);
+          routes.push(...routeInfos);
+        } else {
+          routes.push(config);
+        }
+      })
+    );
     await Promise.all(
       routes.map(async (route) => {
         await downloadRoute(route.remoteUrl, route.routePath, root);
