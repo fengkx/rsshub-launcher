@@ -33,6 +33,19 @@ routes:
 ### 运行
 
 rsshub-launcher 会自动自动下载路由及其依赖文件(暂时不支持 npm 上的外部依赖)
-需要将上一步的配置文件 url 传入`RSSHUB_LAUNCHER_CONFIG_URL`环境变量，然后在`RSSHub`Git repository 根目录运行`rsshub-launcher`。也可以通过`--root`选项指定根目录`。
+需要将上一步的配置文件 url 传入`RSSHUB_LAUNCHER_CONFIG_URL`环境变量，然后在`RSSHub`Git repository 根目录运行`rsshub-launcher`。也可以通过`--root`选项指定根目录。
+你还可以通过`override`设置是否覆盖已经存在的文件。
+
+```shell
+Positionals:
+  --root  File Path to RSSHub repository root
+                             [字符串] [默认值: "."]
+
+选项：
+  --help      显示帮助信息                                                        [布尔]
+  --version   显示版本号                                                         [布尔]
+  --override  Whether override existed file                    [布尔] [默认值: false]
+
+```
 
 ![screenshot](.github/media/screenshot.png)

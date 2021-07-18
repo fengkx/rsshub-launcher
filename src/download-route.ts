@@ -90,14 +90,15 @@ export function getRoutesFromPatch(
 export async function downloadRoute(
   remoteUrl: string,
   routePath: string,
-  RSSHUB_ROOT_DIR: string
+  RSSHUB_ROOT_DIR: string,
+  override: boolean
 ): Promise<void> {
   const { pathname } = new URL(remoteUrl);
   const pathSep = pathname.split("/");
   const startIndex = pathSep.findIndex((p) => p === "routes");
   const requirePath = `./${pathSep.slice(startIndex).join("/")}`;
   await Promise.all([
-    resolveFile(remoteUrl, RSSHUB_ROOT_DIR),
+    resolveFile(remoteUrl, RSSHUB_ROOT_DIR, override),
 
     patchRouterJs(routePath, requirePath, RSSHUB_ROOT_DIR),
   ]);

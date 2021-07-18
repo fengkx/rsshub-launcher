@@ -25,7 +25,8 @@ type ResolveJob = {
 };
 export async function resolveFile(
   url: string,
-  RSSHUB_ROOT_DIR: string
+  RSSHUB_ROOT_DIR: string,
+  override: boolean
 ): Promise<void> {
   const jobs: ResolveJob[] = [
     {
@@ -44,8 +45,16 @@ export async function resolveFile(
     const pathFromRepoRoot = pathSep.slice(4);
     const destPath = join(RSSHUB_ROOT_DIR, ...pathFromRepoRoot);
     if (existsSync(destPath)) {
-      logger.info(`${rawGitHubUrl} existed in ${destPath} skipped`);
-      continue;
+      if (!override) {
+        logger.info(`${rawGitHubUrl} existed in ${destPath} skipped`);
+        continue;
+      }
+      if (!destPath.includes("routes")) {
+        logger.debug(
+          `${rawGitHubUrl} download to ${destPath} is outside of routes folder skipped`
+        );
+        continue;
+      }
     }
     logger.info(`Downloading ${rawGitHubUrl}`);
     const src = await got(rawGitHubUrl, { timeout: 4000 }).text();

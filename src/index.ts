@@ -45,11 +45,17 @@ async function checkRSSHubRoot(RSSHUB_REPO_ROOT: string): Promise<boolean> {
 
 (async function () {
   try {
-    const argv = yargs(hideBin(process.argv)).positional("root", {
-      type: "string",
-      description: "File Path to RSSHub repository root",
-      default: path.resolve("."),
-    }).argv;
+    const argv = await yargs(hideBin(process.argv))
+      .positional("root", {
+        type: "string",
+        description: "File Path to RSSHub repository root",
+        default: path.resolve("."),
+      })
+      .option("override", {
+        type: "boolean",
+        default: false,
+        description: "Whether override existed file",
+      }).argv;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const root = (argv as any).root;
     const isRootValid = await checkRSSHubRoot(root);
@@ -81,7 +87,12 @@ async function checkRSSHubRoot(RSSHUB_REPO_ROOT: string): Promise<boolean> {
     );
     await Promise.all(
       routes.map(async (route) => {
-        await downloadRoute(route.remoteUrl, route.routePath, root);
+        await downloadRoute(
+          route.remoteUrl,
+          route.routePath,
+          root,
+          argv.override
+        );
       })
     );
   } catch (err) {
